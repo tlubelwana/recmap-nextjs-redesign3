@@ -2,7 +2,7 @@ services:
   - type: web
     name: recmap-nextjs-redesign3
     runtime: node
-    plan: starter
+    plan: 0.5c-512mb
     buildCommand: npm ci && npm run build
     startCommand: npm start
     healthCheckPath: /login

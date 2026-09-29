@@ -1,0 +1,21 @@
+node_modules
+.next
+.next-dev
+out
+.env
+.env.local
+*.log
+.DS_Store
+# Local account/history database and its auto-generated session secret —
+# genuinely per-deployment data, never something to ship or commit.
+data/app.db
+data/.session_secret
+
+# Build info and locally-generated deliverables — not part of the app.
+tsconfig.tsbuildinfo
+Claude outputs/
+
+# PDFs and extracted JSON uploaded through /api/upload at runtime.
+# The folder itself must exist; its contents must not be committed.
+data/uploaded/*
+!data/uploaded/.gitkeep

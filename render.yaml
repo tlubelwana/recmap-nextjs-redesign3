@@ -3,7 +3,7 @@ services:
     name: recmap-nextjs-redesign3
     runtime: node
     plan: free
-    buildCommand: npm ci && npm run build
+    buildCommand: npm ci --no-audit --no-fund && npm run build
     startCommand: npm start
     healthCheckPath: /login
     envVars:

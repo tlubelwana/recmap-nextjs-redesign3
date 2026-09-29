@@ -1,10 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import type { Guideline, GuidelineGroup } from "./types";
+import { DATA_DIR, UPLOADED_DIR } from "./storage";
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const BASE_FILE = path.join(DATA_DIR, "guidelines.json");
-const UPLOADED_DIR = path.join(DATA_DIR, "uploaded");
+const BASE_FILE = path.join(process.cwd(), "data", "guidelines.json");
 
 /** The 13 guidelines shipped with the app, pre-appraised from the AGREE II /
  *  recommendation workbooks. These scores are never re-derived by the LLM —

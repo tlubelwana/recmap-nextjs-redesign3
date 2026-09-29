@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { DatabaseSync } from "node:sqlite";
+import { DATA_DIR } from "./storage";
 
 /**
  * RecMap's account/history/feedback store.
@@ -27,7 +28,6 @@ import { DatabaseSync } from "node:sqlite";
  *    lib/nodeSqlite.d.ts's comment on why).
  */
 
-const DATA_DIR = path.join(process.cwd(), "data");
 const DB_PATH = path.join(DATA_DIR, "app.db");
 
 let db: DatabaseSync | null = null;

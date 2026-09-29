@@ -7,13 +7,13 @@ import { runFullExtractionPipeline } from "@/lib/uploadPipeline";
 import { getCurrentUser } from "@/lib/currentUser";
 import type { UploadResponseBody } from "@/lib/types";
 import { UPLOAD_FEATURE_ENABLED } from "@/lib/config";
+import { PDF_DIR } from "@/lib/storage";
 
 export const runtime = "nodejs";
 // Extraction (PDF parse + a long Claude call) can take a while on a big
 // document — give it more headroom than the default route timeout.
 export const maxDuration = 120;
 
-const PDF_DIR = path.join(process.cwd(), "public", "data", "pdfs");
 const MAX_BYTES = 25 * 1024 * 1024; // 25MB
 
 function safeFileName(original: string): string {

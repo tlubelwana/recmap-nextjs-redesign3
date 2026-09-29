@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: recmap-nextjs-redesign3
+    runtime: node
+    plan: starter
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /login
+    envVars:
+      - key: NODE_VERSION
+        value: 22.5.0
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: RECMAP_DATA_DIR
+        value: /var/data
+      - key: NEXT_PUBLIC_UPLOAD_FEATURE_ENABLED
+        value: "false"
+    disk:
+      name: recmap-data
+      mountPath: /var/data
+      sizeGB: 1

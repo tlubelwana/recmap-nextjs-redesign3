@@ -20,5 +20,7 @@ Claude outputs/
 # The folder itself must exist; its contents must not be committed.
 data/uploaded/*
 !data/uploaded/.gitkeep
+data/pdfs/*
+!data/pdfs/.gitkeep
 public/data/pdfs/*
 !public/data/pdfs/.gitkeep

@@ -47,7 +47,7 @@ Open http://localhost:3000 — signed-out visitors land on `/login`; new users g
 Any Next.js host with a **persistent, writable filesystem** works (a VM, or a container with a volume) — Vercel-style ephemeral serverless functions do not, for the reasons below. Three things to know before deploying:
 
 - **Accounts, personas, and history live in a single SQLite file** at `data/app.db` (created automatically on first run). This is genuinely durable on a persistent filesystem, but it is not a multi-instance database — fine for one small deployment, wrong for a horizontally-scaled one. Swap `lib/db.ts` for a real hosted database before scaling out.
-- **Uploaded guidelines are stored as JSON files** under `data/uploaded/` (one file per guideline) and PDFs are saved into `public/data/pdfs/` — same persistent-filesystem requirement as above.
+- **Uploaded guidelines are stored as JSON files** under the configured runtime data directory (`data/uploaded/` locally; Render's `/var/data/uploaded/`) and PDFs are stored beside them (`data/pdfs/` locally; Render's `/var/data/pdfs/`) — the PDF route serves them at `/data/pdfs/<filename>`.
 - **`/api/upload` can run long** (a full LLM extraction pass over a large PDF). It's configured for a 120s route timeout (`maxDuration` in `app/api/upload/route.ts`); raise it, or your host's equivalent limit, if you expect longer documents.
 
 **No email service is wired up.** Sign-up activates an account immediately (no verification email) and there's no "forgot password" flow. Adding either needs a transactional-email provider (Postmark, Resend, SES, ...) and an API key for it — the one piece of this app that genuinely can't be built without an external service, since the app can't send email on its own.
@@ -93,6 +93,10 @@ public/data/pdfs/          source PDFs (13 shipped + any uploaded), linked from 
 public/data/excel/         the original AGREE II / recommendation / AGREE-REX workbooks, for reference/download
 scripts/migrate_agree_rex_real_data.py   one-time script that populated data/guidelines.json's real AGREE-REX data
 ```
+
+### Deploying on Render
+
+The repository includes `render.yaml` for a Node 22 web service with a persistent disk. Create the service from the GitHub repository and enter `ANTHROPIC_API_KEY` in Render's Environment settings as a secret value. Render generates `SESSION_SECRET` and mounts persistent runtime data at `/var/data`. Uploads are disabled by default; enable `NEXT_PUBLIC_UPLOAD_FEATURE_ENABLED` only when you intend to accept PDFs and keep the persistent disk attached.
 
 **Why a Server Component layout instead of `middleware.ts`:** Next's Edge Middleware runtime can't reliably use Node's `crypto`/`fs` modules, which the accounts system needs for password hashing and `node:sqlite`. `app/(authed)/layout.tsx` gates access instead — it runs in the standard Node.js runtime, same as every Route Handler, so there's no Edge-compatibility risk to design around.
 

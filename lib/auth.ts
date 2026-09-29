@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import fs from "fs";
 import path from "path";
+import { DATA_DIR } from "./storage";
 
 /**
  * Password hashing and session tokens, built entirely from Node's built-in
@@ -36,7 +37,7 @@ export function verifyPassword(password: string, hash: string, salt: string): bo
 // default for a small internal tool, not something to rely on across a
 // multi-instance production deployment.
 
-const SECRET_FILE = path.join(process.cwd(), "data", ".session_secret");
+const SECRET_FILE = path.join(DATA_DIR, ".session_secret");
 
 function loadOrCreateSecret(): Buffer {
   const fromEnv = process.env.SESSION_SECRET;

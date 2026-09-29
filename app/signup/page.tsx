@@ -31,7 +31,13 @@ export default function SignupPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-      const data = await res.json();
+      const responseText = await res.text();
+      let data: { error?: string } = {};
+      try {
+        data = responseText ? (JSON.parse(responseText) as { error?: string }) : {};
+      } catch {
+        throw new Error(`Signup failed (${res.status}). The server returned an invalid response.`);
+      }
       if (!res.ok) throw new Error(data?.error || "Couldn't create your account.");
       try {
         window.localStorage.removeItem("recmap-ask-state");

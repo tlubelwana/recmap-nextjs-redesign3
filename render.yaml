@@ -17,3 +17,5 @@ services:
         value: /var/data
       - key: NEXT_PUBLIC_UPLOAD_FEATURE_ENABLED
         value: "false"
+      - key: NEXT_PUBLIC_DEMO_MODE
+        value: "true"

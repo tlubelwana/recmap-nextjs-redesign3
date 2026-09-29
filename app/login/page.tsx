@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import SignalPinMark from "@/components/SignalPinMark";
 
+const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -45,6 +47,22 @@ function LoginForm() {
     }
   }
 
+  async function enterDemo() {
+    setPending(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/auth/demo", { method: "POST" });
+      const responseText = await res.text();
+      const data = responseText ? (JSON.parse(responseText) as { error?: string }) : {};
+      if (!res.ok) throw new Error(data.error || "Couldn't start demo access.");
+      router.push("/ask");
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Couldn't start demo access.");
+      setPending(false);
+    }
+  }
+
   return (
     <div className="auth-card">
       <div className="auth-brand-row">
@@ -73,6 +91,11 @@ function LoginForm() {
           {pending ? "Signing in…" : "Sign in"}
         </button>
       </form>
+      {DEMO_MODE && (
+        <button type="button" className="btn-outline auth-submit" onClick={enterDemo} disabled={pending}>
+          Continue as demo
+        </button>
+      )}
       <p className="auth-switch">
         No account yet? <Link href="/signup">Create one</Link>
       </p>

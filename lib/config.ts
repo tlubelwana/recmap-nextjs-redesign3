@@ -86,3 +86,6 @@ export const VIDEO_WALKTHROUGH_URL: string | null = null;
 
 /** Set NEXT_PUBLIC_UPLOAD_FEATURE_ENABLED=true for a controlled deployment workflow. */
 export const UPLOAD_FEATURE_ENABLED = process.env.NEXT_PUBLIC_UPLOAD_FEATURE_ENABLED === "true";
+
+/** Public demo access skips account credentials and is for demonstrations only. */
+export const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE === "true";

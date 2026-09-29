@@ -96,7 +96,7 @@ scripts/migrate_agree_rex_real_data.py   one-time script that populated data/gui
 
 ### Deploying on Render
 
-The repository includes `render.yaml` for a Node 22 web service with a persistent disk. Create the service from the GitHub repository and enter `ANTHROPIC_API_KEY` in Render's Environment settings as a secret value. Render generates `SESSION_SECRET` and mounts persistent runtime data at `/var/data`. Uploads are disabled by default; enable `NEXT_PUBLIC_UPLOAD_FEATURE_ENABLED` only when you intend to accept PDFs and keep the persistent disk attached.
+The repository includes `render.yaml` for a Node 22 demo web service on Render's free plan, without a persistent disk. Create the service from the GitHub repository and enter `ANTHROPIC_API_KEY` in Render's Environment settings as a secret value. Render generates `SESSION_SECRET`; uploads are disabled. Because the free demo filesystem is ephemeral, accounts, Ask history, and runtime data may be lost after a restart or redeploy. For durable accounts or uploads, use a paid service with a persistent disk and set `RECMAP_DATA_DIR` to its mount path.
 
 **Why a Server Component layout instead of `middleware.ts`:** Next's Edge Middleware runtime can't reliably use Node's `crypto`/`fs` modules, which the accounts system needs for password hashing and `node:sqlite`. `app/(authed)/layout.tsx` gates access instead — it runs in the standard Node.js runtime, same as every Route Handler, so there's no Edge-compatibility risk to design around.
 

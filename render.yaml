@@ -2,7 +2,7 @@ services:
   - type: web
     name: recmap-nextjs-redesign3
     runtime: node
-    plan: 0.5c-512mb
+    plan: free
     buildCommand: npm ci && npm run build
     startCommand: npm start
     healthCheckPath: /login
@@ -17,7 +17,3 @@ services:
         value: /var/data
       - key: NEXT_PUBLIC_UPLOAD_FEATURE_ENABLED
         value: "false"
-    disk:
-      name: recmap-data
-      mountPath: /var/data
-      sizeGB: 1
